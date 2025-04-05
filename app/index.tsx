@@ -1,10 +1,12 @@
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: 'Home' }} />
       <StatusBar style="auto" />
       <Text style={styles.title}>GROW YOUR PLANT</Text>
       

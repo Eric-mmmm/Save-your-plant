@@ -1,3 +1,4 @@
+//<<<<<<< Updated upstream
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Link } from 'expo-router';
 import { useState, useEffect, useRef } from 'react';
@@ -5,6 +6,8 @@ import { CameraView } from 'expo-camera';
 import { useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import { Stack, router } from 'expo-router';
+
 
 export default function ScanScreen() {
   const router = useRouter();
@@ -13,6 +16,7 @@ export default function ScanScreen() {
   const [cameraRef, setCameraRef] = useState<CameraView | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
 
   useEffect(() => {
     requestPermission();
@@ -94,9 +98,12 @@ export default function ScanScreen() {
   
 
   
+
+//>>>>>>> Stashed changes
   if (!permission?.granted) {
     return (
       <View style={styles.container}>
+        <Stack.Screen options={{ title: 'Scan' }} />
         <Text style={styles.text}>No access to camera</Text>
         <TouchableOpacity style={styles.button} onPress={requestPermission}>
           <Text style={styles.buttonText}>Grant Permission</Text>
@@ -107,6 +114,8 @@ export default function ScanScreen() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: 'Scan' }} />
+      
       {/* Camera Section */}
       <View style={styles.cameraContainer}>
         <CameraView
@@ -128,7 +137,10 @@ export default function ScanScreen() {
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={[styles.button, styles.halfButton]} onPress={() => setScanned(false)}>
+          <TouchableOpacity 
+            style={[styles.button, styles.halfButton]} 
+            onPress={() => setScanned(false)}
+          >
             <Text style={styles.buttonText}>Scan Again</Text>
           </TouchableOpacity>
 
@@ -139,6 +151,13 @@ export default function ScanScreen() {
             <Text style={styles.buttonText}>View History</Text>
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity 
+          style={[styles.button, { backgroundColor: '#4CAF50' }]}
+          onPress={() => router.push('/temporary')}
+        >
+          <Text style={styles.buttonText}>Temporary</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -169,34 +188,33 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   bottomSection: {
-    padding: 20,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#000',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 16,
   },
   button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#007AFF',
     padding: 15,
-    borderRadius: 10,
-    width: '100%',
+    borderRadius: 8,
     alignItems: 'center',
   },
+  halfButton: {
+    width: '48%',
+  },
   buttonText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   text: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  halfButton: {
-    width: '48%',
   },
 });
