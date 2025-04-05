@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "backend/routes/gemini.mjs", "backend/index.mjs"  ]
 }
