@@ -1,23 +1,28 @@
 import express from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import {GEMINI_API_KEY} from '../env';
-
-dotenv.config();
+import { GEMINI_API_KEY } from '../env.mjs';
 
 const router = express.Router();
 
 // Set up Gemini model
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+
+router.get('/', (req, res) => {
+  res.send('Gemini API is running');
+});
 
 router.post('/', async (req, res) => {
+  console.log('Received POST request to /gemini');
   const { image } = req.body;
 
   if (!image) {
-    return res.status(400).json({ message: 'No image provided' });
+    console.log('No image data received');
+    return res.status(400).json({ message: 'No image data provided' });
   }
 
   try {
+    console.log('Sending request to Gemini API...');
     const result = await model.generateContent([
       {
         inlineData: {
@@ -31,9 +36,10 @@ router.post('/', async (req, res) => {
     ]);
 
     const text = result.response.text();
+    console.log('Received response from Gemini API');
     res.json({ result: text });
   } catch (err) {
-    console.error('Gemini error:', err.response?.data || err.message);
+    console.error('Gemini error:', err.message);
     res.status(500).json({ message: 'Gemini API call failed' });
   }
 });

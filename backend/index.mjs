@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import geminiRouter from './routes/gemini';
-import productRouter from './routes/products'; // optional
+import geminiRouter from './routes/gemini.mjs';
 
 const app = express();
 const PORT = 3000;
@@ -10,7 +9,6 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
 app.use('/gemini', geminiRouter);
-app.use('/products', productRouter);
 
 app.listen(PORT, () => {
   console.log(`Backend running at http://localhost:${PORT}`);
