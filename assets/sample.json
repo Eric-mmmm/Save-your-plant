@@ -1,0 +1,71 @@
+{
+  "products": [
+    {
+      "barcode_number": "069000147702",
+      "barcode_formats": "UPC-A 069000147702, EAN-13 0069000147702",
+      "mpn": "",
+      "model": "",
+      "asin": "",
+      "title": "Starbucks Mocha Frappuccino, 405Ml Bottle",
+      "category": "Food, Beverages & Tobacco",
+      "manufacturer": "Pepsi Bottling Group Canada",
+      "brand": "Starbucks",
+      "contributors": [],
+      "age_group": "",
+      "ingredients": "",
+      "nutrition_facts": "Energy 64.1975 kcal, Fat 1.1111 g, Saturated Fat 0.7407 g, Carbohydrates 11.6049 g, Sugars 11.1111 g, Fiber 0.2469 g, Protein 2.2222 g, Salt 0.08641975 g.",
+      "energy_efficiency_class": "",
+      "color": "",
+      "gender": "",
+      "material": "",
+      "pattern": "",
+      "format": "",
+      "multipack": "",
+      "size": "",
+      "length": "",
+      "width": "",
+      "height": "",
+      "weight": "",
+      "release_date": "",
+      "description": "405m L.",
+      "features": [],
+      "images": [
+        "https://images.barcodelookup.com/32330/323303528-1.jpg"
+      ],
+      "last_update": "2025-01-05 13:07:50",
+      "stores": [
+        {
+          "name": "goPuff",
+          "country": "US",
+          "currency": "USD",
+          "currency_symbol": "$",
+          "price": "4.29",
+          "sale_price": "",
+          "tax": [],
+          "link": "https://link.gopuff.com/drinks/coffee/starbucks_mocha_frappuccino_13_7oz_btl",
+          "item_group_id": "",
+          "availability": "",
+          "condition": "new",
+          "shipping": [],
+          "last_update": "2022-04-09 18:14:10"
+        },
+        {
+          "name": "Voilà",
+          "country": "CA",
+          "currency": "CAD",
+          "currency_symbol": "$",
+          "price": "4.49",
+          "sale_price": "",
+          "tax": [],
+          "link": "https://voila.ca/region-redirect/3809?target=%2Fproducts%2F490089EA%2Fdetails%3Flanguage%3Den-CA",
+          "item_group_id": "",
+          "availability": "",
+          "condition": "",
+          "shipping": [],
+          "last_update": "2024-12-11 13:26:40"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}

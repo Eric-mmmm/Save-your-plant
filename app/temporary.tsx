@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 export default function TemporaryScreen() {
+  const { product } = useLocalSearchParams();
+  const parsedProduct = product ? JSON.parse(decodeURIComponent(product as string)) : null;
+  const productTitle = parsedProduct?.products?.[0]?.title || 'Unknown Product';
+
   return (
     <ScrollView style={styles.container}>
       <Stack.Screen options={{ 
@@ -11,7 +15,7 @@ export default function TemporaryScreen() {
       }} />
 
       <View style={styles.scoreContainer}>
-        <Text style={styles.productName}>Monster Energy Ultra Violet</Text>
+        <Text style={styles.productName}>{productTitle}</Text>
         <Text style={styles.scoreText}>Environmental Impact Score</Text>
         <Text style={styles.score}>7/10</Text>
       </View>

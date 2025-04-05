@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { Stack, router } from 'expo-router';
 import { BARCODE_LOOKUP_API_KEY } from '../backend/env.js';
+import sample from '../assets/sample.json';
 
 
 export default function ScanScreen() {
@@ -17,6 +18,11 @@ export default function ScanScreen() {
   const [cameraRef, setCameraRef] = useState<CameraView | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [productInfo, setProductInfo] = useState<{
+    title?: string;
+    brand?: string;
+    nutrition_facts?: string;
+  } | null>(null);
 
 
   useEffect(() => {
@@ -36,19 +42,6 @@ export default function ScanScreen() {
     }
   }, [scanned, isCameraReady]);
 
-/*
-  const captureImage = async () => {
-    if (cameraRef) {
-      const photo = await cameraRef.takePictureAsync({ base64: true });
-      if (!photo?.base64) {
-        throw new Error('Failed to capture image');
-      }
-      const response = await axios.post("http://localhost:3000/gemini", {
-        image: photo.base64,
-      });
-      console.log(response.data);
-    }
-  }; */
 
   const captureImage = async () => {
     console.log('captureImage called, cameraRef:', cameraRef);
@@ -85,18 +78,6 @@ export default function ScanScreen() {
     }
   };
 
-  /*
-  const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
-    if (scanned) return;
-    
-    if (result.data) {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current); // Cancel Gemini fallback
-      setScanned(true);
-      Alert.alert('Barcode Scanned', `Value: ${result.data}`);
-    }
-    
-  }; */
-
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     if (scanned) return;
   
@@ -106,20 +87,24 @@ export default function ScanScreen() {
     setScanned(true);
   
     try {
-      const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${BARCODE_LOOKUP_API_KEY}`;
+      //const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${BARCODE_LOOKUP_API_KEY}`;
   
-      const response = await axios.get(url);
-      const product = response.data?.products?.[0];
-  
+      //const response = await axios.get(url);
+      //const product = response.data?.products?.[0];
+      const product = sample;
+
       if (product) {
-        const title = product.title || "Unknown Title";
-        const brand = product.brand || "Unknown Brand";
-        const nutrition = product.nutrition_facts || "No nutrition info.";
+        const title = product.products[0].title || "Unknown Title";
+        const brand = product.products[0].brand || "Unknown Brand";
+        const nutrition = product.products[0].nutrition_facts || "No nutrition info.";
+        //setProductInfo(product);
   
-        Alert.alert(
+        router.push({ pathname: '/temporary', params: { productInfo: JSON.stringify(product) } });
+        
+        /*Alert.alert(
           'Product Found',
           `Name: ${title}\nBrand: ${brand}\n\nNutrition:\n${nutrition}`
-        );
+        );*/
       } else {
         throw new Error("Product not found in lookup API");
       }
@@ -146,9 +131,7 @@ export default function ScanScreen() {
 
   
 
-  
 
-//>>>>>>> Stashed changes
   if (!permission?.granted) {
     return (
       <View style={styles.container}>
@@ -203,7 +186,7 @@ export default function ScanScreen() {
 
         <TouchableOpacity 
           style={[styles.button, { backgroundColor: '#4CAF50' }]}
-          onPress={() => router.push('/temporary')}
+          onPress={() => router.push({ pathname: '/temporary', params: { productInfo: JSON.stringify(productInfo) } })}
         >
           <Text style={styles.buttonText}>Temporary</Text>
         </TouchableOpacity>
