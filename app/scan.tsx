@@ -7,6 +7,7 @@ import { useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { Stack, router } from 'expo-router';
+import { BARCODE_LOOKUP_API_KEY } from '../backend/env.js';
 
 
 export default function ScanScreen() {
@@ -84,6 +85,7 @@ export default function ScanScreen() {
     }
   };
 
+  /*
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     if (scanned) return;
     
@@ -93,7 +95,54 @@ export default function ScanScreen() {
       Alert.alert('Barcode Scanned', `Value: ${result.data}`);
     }
     
-  }; 
+  }; */
+
+  const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
+    if (scanned) return;
+  
+    const barcode = result?.data;
+    if (!barcode) return;
+  
+    setScanned(true);
+  
+    try {
+      const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${BARCODE_LOOKUP_API_KEY}`;
+  
+      const response = await axios.get(url);
+      const product = response.data?.products?.[0];
+  
+      if (product) {
+        const title = product.title || "Unknown Title";
+        const brand = product.brand || "Unknown Brand";
+        const nutrition = product.nutrition_facts || "No nutrition info.";
+  
+        Alert.alert(
+          'Product Found',
+          `Name: ${title}\nBrand: ${brand}\n\nNutrition:\n${nutrition}`
+        );
+      } else {
+        throw new Error("Product not found in lookup API");
+      }
+    } catch (err) {
+      console.warn('Barcode not found in API. Falling back to Gemini...');
+  
+      try {
+        const photo = await cameraRef?.takePictureAsync({ base64: true });
+        if (!photo?.base64) {
+          throw new Error('Failed to capture image');
+        }
+  
+        const geminiRes = await axios.post("http://localhost:3000/gemini", {
+          image: photo.base64,
+        });
+  
+        Alert.alert("Gemini AI Result", geminiRes.data.result || "No result from Gemini");
+      } catch (geminiErr) {
+        console.error(geminiErr);
+        Alert.alert("Error", "Gemini analysis failed.");
+      }
+    }
+  };
 
   
 
